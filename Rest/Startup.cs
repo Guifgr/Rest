@@ -2,10 +2,14 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Rest.Models.Context;
+using Rest.Services;
+using Rest.Services.Implementations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +29,11 @@ namespace Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddScoped<IpersonService, PersonServiceImplementation>();
             services.AddControllers();
+
+            var connection = Configuration["MySqlConnection:MySqlConnectionString"];
+            services.AddDbContext<MySqlContext>(options => options.UseMySql(connection));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
