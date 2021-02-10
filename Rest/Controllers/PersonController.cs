@@ -47,13 +47,16 @@ namespace Rest.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] Person person)
         {
-            if (person == null) return BadRequest();
+            person = _personService.FindById(person.Id);
+            if (person == null) return NotFound(new { ID = "This ID was not found in our database" });
             return Ok(_personService.Update(person));
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
+            var person = _personService.FindById(id);
+            if (person == null) return NotFound(new { ID = "This ID was not found in our database" });
             _personService.Delete(id);
             return NoContent();
         }

@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace Rest
 {
@@ -24,7 +25,7 @@ namespace Rest
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -33,7 +34,17 @@ namespace Rest
             services.AddControllers();
 
             var connection = Configuration["MySqlConnection:MySqlConnectionString"];
-            services.AddDbContext<MySqlContext>(options => options.UseMySql(connection));
+            
+            services.AddDbContextPool<MySqlContext>(
+                dbContextOptions => dbContextOptions
+                    .UseMySql(
+                        // Replace with your connection string.
+                        connection,
+                        // Replace with your server version and type.
+                        // For common usages, see pull request #1233.
+                        new MySqlServerVersion(new Version(8, 0, 21)), // use MariaDbServerVersion for MariaDB
+                        mySqlOptions => mySqlOptions
+                            .CharSetBehavior(CharSetBehavior.NeverAppend)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

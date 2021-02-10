@@ -42,23 +42,20 @@ namespace Rest.Services.Implementations
 
         public Person Update(Person person)
         {
-            if (!Exists(person.Id)) return new Person();
+            if (!Exists(person.Id)) return null;
 
             var result =  _context.Persons.SingleOrDefault(p => p.Id.Equals(person.Id));
 
-            if(result != null)
+            try
             {
-                try
-                {
-                    _context.Entry(result).CurrentValues.SetValues(person);
-                    _context.SaveChanges();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
-
+                _context.Entry(result).CurrentValues.SetValues(person);
+                _context.SaveChanges();
             }
+            catch (Exception)
+            {
+                throw;
+            }
+
             return person;
         }
 
