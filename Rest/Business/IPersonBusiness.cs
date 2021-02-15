@@ -2,14 +2,14 @@
 using System;
 using System.Collections.Generic;
 
-namespace Rest.Services
+namespace Rest.Business
 {
-    public interface IpersonService
+    public interface IPersonBusiness
     {
         Person Create(Person person);
         Person Update(Person person);
-        Person FindById(long Id);
+        Person FindById(long id);
         List<Person> FindAll();
-        void Delete(long Id);
+        void Delete(long id);
     }
 }

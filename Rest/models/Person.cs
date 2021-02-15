@@ -10,7 +10,7 @@ namespace Rest.models
     public class Person
     {
         [Column("id")]
-        public long Id { get; set; }
+        public long id { get; set; }
         [Column("first_name")]
         public string Firstname { get; set; }
         [Column("last_name")]
