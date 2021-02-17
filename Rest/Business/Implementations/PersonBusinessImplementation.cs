@@ -5,14 +5,15 @@ using System.Collections.Generic;
 using Rest.Models.Context;
 using System.Linq;
 using Rest.Repository;
+using Rest.Repository.Generic;
 
 namespace Rest.Business.Implementations
 {
     public class PersonBusinessImplementation : IPersonBusiness
     {
-        private readonly IPersonRepository _repository;
+        private readonly IRepository<Person> _repository;
 
-        public PersonBusinessImplementation(IPersonRepository repository) 
+        public PersonBusinessImplementation(IRepository<Person> repository) 
         {
             _repository = repository;
         }

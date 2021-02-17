@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "3FKW4unKnV38lzabzwacHHdVKdS9P+oHLjl/roUBIu7srl56TtHbDDEiqoe/rWWLuZwY2Q2kjRGG8/VLUbHX9Q==",
+  "dgSpecHash": "2Vz5UdvIexBQC7KxzTCRG6t72VTPnFHPVYNilp8HyuWNYnQ4NycZlNGwxkScNH5z+NNgHtGzRmsJIWdWIFvEPw==",
   "success": true,
   "projectFilePath": "C:\\Users\\guifg\\Documents\\GitHub\\Rest\\Rest\\Rest.csproj",
   "expectedPackageFiles": [
@@ -12,6 +12,7 @@
     "C:\\Users\\guifg\\.nuget\\packages\\microsoft.entityframeworkcore.analyzers\\5.0.3\\microsoft.entityframeworkcore.analyzers.5.0.3.nupkg.sha512",
     "C:\\Users\\guifg\\.nuget\\packages\\microsoft.entityframeworkcore.design\\5.0.3\\microsoft.entityframeworkcore.design.5.0.3.nupkg.sha512",
     "C:\\Users\\guifg\\.nuget\\packages\\microsoft.entityframeworkcore.relational\\5.0.3\\microsoft.entityframeworkcore.relational.5.0.3.nupkg.sha512",
+    "C:\\Users\\guifg\\.nuget\\packages\\microsoft.entityframeworkcore.tools\\5.0.3\\microsoft.entityframeworkcore.tools.5.0.3.nupkg.sha512",
     "C:\\Users\\guifg\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\5.0.0\\microsoft.extensions.caching.abstractions.5.0.0.nupkg.sha512",
     "C:\\Users\\guifg\\.nuget\\packages\\microsoft.extensions.caching.memory\\5.0.0\\microsoft.extensions.caching.memory.5.0.0.nupkg.sha512",
     "C:\\Users\\guifg\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\5.0.0\\microsoft.extensions.configuration.abstractions.5.0.0.nupkg.sha512",

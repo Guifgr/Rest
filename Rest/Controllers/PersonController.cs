@@ -2,10 +2,6 @@
 using Microsoft.Extensions.Logging;
 using Rest.models;
 using Rest.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Rest.Controllers
 {
@@ -15,9 +11,8 @@ namespace Rest.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IPersonBusiness _personBusiness;
-
+        
         private readonly ILogger<PersonController> _logger;
-
         public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
         {
             _logger = logger;
@@ -48,8 +43,7 @@ namespace Rest.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] Person person)
         {
-            person = _personBusiness.FindById(person.id);
-            if (person == null) return NotFound(new { ID = "This ID was not found in our database" });
+            if (person == null) return BadRequest();
             return Ok(_personBusiness.Update(person));
         }
 

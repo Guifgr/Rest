@@ -10,7 +10,8 @@ using Rest.Business.Implementations;
 using System;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Rest.Repository;
-using Rest.Repository.Implementations;
+using Rest.Repository.Generic;
+using Rest.Repository.Generic.Implementations;
 
 namespace Rest
 {
@@ -26,8 +27,11 @@ namespace Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
-            services.AddScoped<IPersonRepository, PersonRepositoryImplementation>();
+            services.AddScoped<IBookBusiness, BookBusinessImplementation>();
+            
             services.AddControllers();
 
             var connection = Configuration["MySqlConnection:MySqlConnectionString"];
