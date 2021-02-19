@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Rest.Business;
+using Rest.Data.VO;
 using Rest.models;
 using RestWithASPNETUdemy.Hypermedia.Filters;
 
@@ -22,12 +24,25 @@ namespace Rest.Controllers
         }
         
         [HttpGet]
+        [ProducesResponseType((200), Type = typeof(List<BookVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]        
+        [ProducesResponseType(500)]        
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult GetBooks()
         {
             return Ok(_bookBusiness.FindAll());
         }
         [HttpGet("{id}")]
+        [ProducesResponseType((200), Type = typeof(BookVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]    
+        [ProducesResponseType(500)]   
+        [TypeFilter(typeof(HyperMediaFilter))]
+
         public IActionResult GetById(long id)
         {
             var book = _bookBusiness.FindById(id);
@@ -36,6 +51,12 @@ namespace Rest.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType((201), Type = typeof(BookVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]   
+        [ProducesResponseType(500)]   
+        [TypeFilter(typeof(HyperMediaFilter))]
+
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] Book book)
         {
@@ -44,6 +65,11 @@ namespace Rest.Controllers
         }
         
         [HttpPut]
+        [ProducesResponseType((200), Type = typeof(BookVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]     
+        [ProducesResponseType(500)]   
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] Book book)
         {
@@ -53,6 +79,11 @@ namespace Rest.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]       
+        [ProducesResponseType(500)]   
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Delete(long id)
         {
             var book = _bookBusiness.FindById(id);

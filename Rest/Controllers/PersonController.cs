@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Rest.models;
 using Rest.Business;
@@ -29,6 +30,12 @@ namespace Rest.Controllers
         }
         
         [HttpGet("{id}")]
+        [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]        
+        [TypeFilter(typeof(HyperMediaFilter))]
+
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult GetById(long id)
         {
@@ -38,6 +45,10 @@ namespace Rest.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType((201), Type = typeof(BookVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]   
+        [ProducesResponseType(500)]  
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] PersonVO person)
         {
@@ -47,6 +58,11 @@ namespace Rest.Controllers
         
         [HttpPut]
         [TypeFilter(typeof(HyperMediaFilter))]
+        [ProducesResponseType((200), Type = typeof(BookVO))]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        [ProducesResponseType(401)]     
+        [ProducesResponseType(500)]   
         public IActionResult Put([FromBody] PersonVO person)
         {
             person = _personBusiness.Update(person);
@@ -55,6 +71,10 @@ namespace Rest.Controllers
         }
 
         [HttpDelete("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]       
+        [ProducesResponseType(500)]   
         public IActionResult Delete(long id)
         {
             var person = _personBusiness.FindById(id);

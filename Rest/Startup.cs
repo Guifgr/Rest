@@ -8,7 +8,9 @@ using Rest.Models.Context;
 using Rest.Business;
 using Rest.Business.Implementations;
 using System;
+using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Net.Http.Headers;
+using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Rest.Repository;
 using Rest.Repository.Generic;
@@ -30,6 +32,10 @@ namespace Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options => options.AddDefaultPolicy(biuder =>
+            {
+                biuder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod();
+            }));
             services.AddControllers();
             
             services.AddMvc(options =>
@@ -49,6 +55,22 @@ namespace Rest
 
             //Versioning API
             services.AddApiVersioning();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1",
+                    new OpenApiInfo
+                    {
+                        Title = "Rest Apis from zero course",
+                        Version = "v1",
+                        Description = "Api RESTful",
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Guilherme",
+                            Url = new Uri("https://guilhermefgr.com.br/")
+                        }
+                    });
+            });
 
             //Dependency Injection
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
@@ -84,6 +106,20 @@ namespace Rest
 
             app.UseRouting();
 
+            app.UseCors();
+            
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                    "REST api from zero");
+            });
+
+            var option = new RewriteOptions();
+            option.AddRedirect("^$", "swagger");
+            app.UseRewriter(option);
+                
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
