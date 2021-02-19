@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using Rest.Data.VO;
 using Rest.models.Base;
 using Rest.Models.Context;
 
@@ -11,28 +12,28 @@ namespace Rest.Repository.Generic.Implementations
     {
         private readonly MySqlContext _context;
 
-        private readonly DbSet<T> _dataset;
+        private readonly DbSet<T> dataset;
         public GenericRepository(MySqlContext context)
         {
             _context = context;
-            _dataset = _context.Set<T>();
+            dataset = _context.Set<T>();
         }
 
         public T FindById(long id)
         {
-            return _dataset.SingleOrDefault(p => p.Id.Equals(id));
+            return dataset.SingleOrDefault(p => p.Id.Equals(id));
         }
 
         public List<T> FindAll()
         {
-            return _dataset.ToList();
+            return dataset.ToList();
         }
 
         public T Create(T item)
         {
             try
             {
-                _dataset.Add(item);
+                dataset.Add(item);
                 _context.SaveChanges();
                 return item;
             }
@@ -44,7 +45,7 @@ namespace Rest.Repository.Generic.Implementations
 
         public T Update(T item)
         {
-            var result = _dataset.SingleOrDefault(p => p.Id.Equals(item.Id));
+            var result = dataset.SingleOrDefault(p => p.Id.Equals(item.Id));
             if (result != null)
             {
                 try
@@ -67,12 +68,12 @@ namespace Rest.Repository.Generic.Implementations
 
         public void Delete(long id)
         {
-            var result = _dataset.SingleOrDefault(p => p.Id.Equals(id));
+            var result = dataset.SingleOrDefault(p => p.Id.Equals(id));
             if (result != null)
             {
                 try
                 {
-                    _dataset.Remove(result);
+                    dataset.Remove(result);
                     _context.SaveChanges();
                 }
                 catch (Exception)
@@ -84,7 +85,7 @@ namespace Rest.Repository.Generic.Implementations
 
         public bool Exists(long id)
         {
-            return _dataset.Any(p => p.Id.Equals(id));
+            return dataset.Any(p => p.Id.Equals(id));
         }
     }
 }

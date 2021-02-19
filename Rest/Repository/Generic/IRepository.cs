@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Rest.Data.VO;
 using Rest.models;
 using Rest.models.Base;
 

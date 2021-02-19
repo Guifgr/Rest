@@ -43,7 +43,8 @@ namespace Rest.Controllers
         [HttpPut]
         public IActionResult Put([FromBody] Book book)
         {
-            if (book == null) return BadRequest();
+            book = _bookBusiness.Update(book);
+            if (book == null) return NotFound();
             return Ok(_bookBusiness.Update(book));
         }
 
