@@ -8,10 +8,13 @@ using Rest.Models.Context;
 using Rest.Business;
 using Rest.Business.Implementations;
 using System;
+using Microsoft.Net.Http.Headers;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Rest.Repository;
 using Rest.Repository.Generic;
 using Rest.Repository.Generic.Implementations;
+using RestWithASPNETUdemy.Hypermedia.Enricher;
+using RestWithASPNETUdemy.Hypermedia.Filters;
 
 namespace Rest
 {
@@ -27,17 +30,34 @@ namespace Rest
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
+            services.AddControllers();
             
+            services.AddMvc(options =>
+                {
+                    options.RespectBrowserAcceptHeader = true;
+
+                    options.FormatterMappings.SetMediaTypeMappingForFormat("xml", MediaTypeHeaderValue.Parse("application/xml"));
+                    options.FormatterMappings.SetMediaTypeMappingForFormat("json", MediaTypeHeaderValue.Parse("application/json"));
+                })
+                .AddXmlSerializerFormatters();
+
+            var filterOptions = new HyperMediaFilterOptions();
+            filterOptions.ContentResponseEnricherList.Add(new PersonEnricher());
+            filterOptions.ContentResponseEnricherList.Add(new BookEnricher());
+
+            services.AddSingleton(filterOptions);
+
+            //Versioning API
+            services.AddApiVersioning();
+
+            //Dependency Injection
             services.AddScoped<IPersonBusiness, PersonBusinessImplementation>();
             services.AddScoped<IBookBusiness, BookBusinessImplementation>();
-            
-            services.AddControllers();
+
+            services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 
             var connection = Configuration["MySqlConnection:MySqlConnectionString"];
-            
-            services.AddApiVersioning();
-            
+
             services.AddDbContextPool<MySqlContext>(
                 dbContextOptions => dbContextOptions
                     .UseMySql(
@@ -45,9 +65,11 @@ namespace Rest
                         connection,
                         // Replace with your server version and type.
                         // For common usages, see pull request #1233.
-                        new MySqlServerVersion(new Version(8, 0, 21)), // use MariaDbServerVersion for MariaDB
+                        new MariaDbServerVersion(new Version(8, 0, 21)), // use MySqlServerVersion for Mysql
                         mySqlOptions => mySqlOptions
                             .CharSetBehavior(CharSetBehavior.NeverAppend)));
+            
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +89,7 @@ namespace Rest
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapControllerRoute("DefaultApi", "{controller=values}/{id?}");
             });
         }
     }

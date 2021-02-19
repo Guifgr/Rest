@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Rest.Business;
 using Rest.models;
+using RestWithASPNETUdemy.Hypermedia.Filters;
 
 namespace Rest.Controllers
 {
@@ -21,6 +22,7 @@ namespace Rest.Controllers
         }
         
         [HttpGet]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult GetBooks()
         {
             return Ok(_bookBusiness.FindAll());
@@ -34,6 +36,7 @@ namespace Rest.Controllers
         }
 
         [HttpPost]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] Book book)
         {
             if (book == null) return BadRequest();
@@ -41,6 +44,7 @@ namespace Rest.Controllers
         }
         
         [HttpPut]
+        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Put([FromBody] Book book)
         {
             book = _bookBusiness.Update(book);
