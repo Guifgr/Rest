@@ -1,6 +1,6 @@
 ﻿namespace Rest.Configurations
 {
-    public class TokenCOnfiguration
+    public class TokenConfiguration
     {
         public string Audience { get; set; }
         

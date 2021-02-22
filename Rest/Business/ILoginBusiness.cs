@@ -1,0 +1,9 @@
+﻿using Rest.Data.VO;
+
+namespace Rest.Business
+{
+    public interface ILoginBusiness
+    {
+        TokenVO ValidateCredential(UserVO user);
+    }
+}

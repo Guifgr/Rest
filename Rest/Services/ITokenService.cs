@@ -3,7 +3,7 @@ using System.Security.Claims;
 
 namespace Rest.Services
 {
-    public interface ITokenInterface
+    public interface ITokenService
     {
         string GenerateAcessToken(IEnumerable<Claim> claims);
         string GenerateRefreshToken();
