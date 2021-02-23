@@ -43,7 +43,6 @@ namespace Rest.Business.Implementations
             DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
 
             _repository.RefreshUserInfo(user);
-            Console.WriteLine(acessToken);
             return new TokenVO(
                 true,
                 createDate.ToString(DATE_FORMAT),

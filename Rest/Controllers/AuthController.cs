@@ -21,10 +21,8 @@ namespace Rest.Controllers
         public IActionResult Signin([FromBody] UserVO user)
         {
             if (user == null) return BadRequest("Invalid client request");
-            
             var token = _loginBusiness.ValidateCredential(user);
             if (token == null) return Unauthorized();
-            
             return Ok(token);
         }
     }
