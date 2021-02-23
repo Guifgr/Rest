@@ -7,5 +7,6 @@ namespace Rest.Repository
     {
         User ValidateCredentials(UserVO user);
         User RefreshUserInfo(User user);
+        User ValidateCredentials(string userName);
     }
 }

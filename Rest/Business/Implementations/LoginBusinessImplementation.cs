@@ -51,5 +51,36 @@ namespace Rest.Business.Implementations
                 refreshToken
             );
         }
+
+        public TokenVO RefreshCredential(TokenVO token)
+        {
+            var acessToken = token.AcessToken;
+            var refreshToken = token.RefreshToken;
+
+            var principal = _tokenService.GetPrincipalFromExpiredToken(acessToken);
+            var UserName = principal.Identity.Name;
+            var user = _repository.ValidateCredentials(UserName);
+            
+            if (user == null || 
+                user.RefreshToken != refreshToken || 
+                user.RefreshTokenExpiryTime <= DateTime.Now) return null;
+
+            acessToken = _tokenService.GenerateAcessToken(principal.Claims);
+            refreshToken = _tokenService.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            
+            DateTime createDate = DateTime.Now;
+            DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
+
+            _repository.RefreshUserInfo(user);
+            return new TokenVO(
+                true,
+                createDate.ToString(DATE_FORMAT),
+                expirationDate.ToString(DATE_FORMAT),
+                acessToken,
+                refreshToken
+            );
+        }
     }
 }

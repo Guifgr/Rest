@@ -39,6 +39,11 @@ namespace Rest.Repository
             return result;
         }
 
+        public User ValidateCredentials(string userName)
+        {
+            return _context.Users.SingleOrDefault(u => (u.UserName == userName));
+        }
+
         public User ValidateCredentials(UserVO user)
         {
             var password = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
