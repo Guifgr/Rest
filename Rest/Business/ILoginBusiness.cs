@@ -6,5 +6,6 @@ namespace Rest.Business
     {
         TokenVO ValidateCredential(UserVO user);
         TokenVO RefreshCredential(TokenVO token);
+        bool RevokeToken(string username);
     }
 }

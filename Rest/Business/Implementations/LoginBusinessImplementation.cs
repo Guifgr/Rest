@@ -59,7 +59,7 @@ namespace Rest.Business.Implementations
 
             var principal = _tokenService.GetPrincipalFromExpiredToken(acessToken);
             var UserName = principal.Identity.Name;
-            var user = _repository.ValidateCredentials(UserName);
+            var user = _repository.RefreshUserInfo(UserName);
             
             if (user == null || 
                 user.RefreshToken != refreshToken || 
@@ -81,6 +81,11 @@ namespace Rest.Business.Implementations
                 acessToken,
                 refreshToken
             );
+        }
+
+        public bool RevokeToken(string username)
+        {
+            return _repository.RevokeToken(username);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Rest.Business;
 using Rest.Data.VO;
@@ -34,6 +35,16 @@ namespace Rest.Controllers
             tokenVo = _loginBusiness.RefreshCredential(tokenVo);
             if (tokenVo == null) return BadRequest("Invalid client request");
             return Ok(tokenVo);
+        }
+        [HttpGet]
+        [Authorize("Bearer")]
+        [Route("revoke")]
+        public IActionResult Revoke()
+        {
+            var username = User.Identity.Name;
+            var result = _loginBusiness.RevokeToken(username);
+            if (!result) return BadRequest("Invalid Client request");
+            return NoContent();
         }
     }
 }
