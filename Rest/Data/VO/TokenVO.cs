@@ -2,10 +2,10 @@
 {
     public class TokenVO
     {
-        public TokenVO(bool authenticated, string created, string expiration, string acessToken, string refreshToken)
+        public TokenVO(bool authenticated, string createDate, string expiration, string acessToken, string refreshToken)
         {
             Authenticated = authenticated;
-            CreateDate = created;
+            CreateDate = createDate;
             Expiration = expiration;
             AcessToken = acessToken;
             RefreshToken = refreshToken;

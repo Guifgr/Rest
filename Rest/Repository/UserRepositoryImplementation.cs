@@ -39,10 +39,24 @@ namespace Rest.Repository
             return result;
         }
 
+        public bool RevokeToken(string userName)
+        {
+            var user = RefreshUserInfo(userName);
+            if (user is null) return false;
+            user.RefreshToken = null;
+            _context.SaveChanges();
+            return true;
+        }
+
+        public User RefreshUserInfo(string userName)
+        {
+            return _context.Users.SingleOrDefault(u => (u.UserName == userName));
+        }
+
         public User ValidateCredentials(UserVO user)
         {
             var password = ComputeHash(user.Password, new SHA256CryptoServiceProvider());
-            return _context.Users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.Password == (string) password));
+            return _context.Users.FirstOrDefault(u => (u.UserName == user.UserName) && (u.Password == password));
         }
 
         private object ComputeHash(string input, SHA256CryptoServiceProvider algorithm)

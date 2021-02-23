@@ -7,5 +7,7 @@ namespace Rest.Repository
     {
         User ValidateCredentials(UserVO user);
         User RefreshUserInfo(User user);
+        bool RevokeToken(string userName);
+        User RefreshUserInfo(string userName);
     }
 }

@@ -12,8 +12,8 @@ namespace Rest.Business.Implementations
     public class LoginBusinessImplementation : ILoginBusiness
     {
         private const string DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-        private TokenConfiguration _configuration;
-        private IUserRepository _repository;
+        private readonly TokenConfiguration _configuration;
+        private readonly IUserRepository _repository;
         private readonly ITokenService _tokenService;
 
         public LoginBusinessImplementation(TokenConfiguration configuration, IUserRepository repository, ITokenService tokenService)
@@ -33,24 +33,59 @@ namespace Rest.Business.Implementations
                 new Claim(JwtRegisteredClaimNames.UniqueName, user.UserName)
 
             };
-            var AcessToken = _tokenService.GenerateAcessToken(claims);
-            var RefreshToken = _tokenService.GenerateRefreshToken();
+            var acessToken = _tokenService.GenerateAcessToken(claims);
+            var refreshToken = _tokenService.GenerateRefreshToken();
 
-            user.RefreshToken = RefreshToken;
+            user.RefreshToken = refreshToken;
             user.RefreshTokenExpiryTime = DateTime.Now.AddDays(_configuration.DaysToExpire);
             
             DateTime createDate = DateTime.Now;
             DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
 
             _repository.RefreshUserInfo(user);
-
             return new TokenVO(
                 true,
                 createDate.ToString(DATE_FORMAT),
                 expirationDate.ToString(DATE_FORMAT),
-                AcessToken,
-                RefreshToken
+                acessToken,
+                refreshToken
             );
+        }
+
+        public TokenVO RefreshCredential(TokenVO token)
+        {
+            var acessToken = token.AcessToken;
+            var refreshToken = token.RefreshToken;
+
+            var principal = _tokenService.GetPrincipalFromExpiredToken(acessToken);
+            var UserName = principal.Identity.Name;
+            var user = _repository.RefreshUserInfo(UserName);
+            
+            if (user == null || 
+                user.RefreshToken != refreshToken || 
+                user.RefreshTokenExpiryTime <= DateTime.Now) return null;
+
+            acessToken = _tokenService.GenerateAcessToken(principal.Claims);
+            refreshToken = _tokenService.GenerateRefreshToken();
+
+            user.RefreshToken = refreshToken;
+            
+            DateTime createDate = DateTime.Now;
+            DateTime expirationDate = createDate.AddMinutes(_configuration.Minutes);
+
+            _repository.RefreshUserInfo(user);
+            return new TokenVO(
+                true,
+                createDate.ToString(DATE_FORMAT),
+                expirationDate.ToString(DATE_FORMAT),
+                acessToken,
+                refreshToken
+            );
+        }
+
+        public bool RevokeToken(string username)
+        {
+            return _repository.RevokeToken(username);
         }
     }
 }
