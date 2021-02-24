@@ -47,7 +47,7 @@ namespace Rest.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType((201), Type = typeof(BookVO))]
+        [ProducesResponseType((201), Type = typeof(PersonVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]   
         [ProducesResponseType(500)]  
@@ -60,7 +60,7 @@ namespace Rest.Controllers
         
         [HttpPut]
         [TypeFilter(typeof(HyperMediaFilter))]
-        [ProducesResponseType((200), Type = typeof(BookVO))]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
         [ProducesResponseType(401)]     
@@ -70,6 +70,28 @@ namespace Rest.Controllers
             person = _personBusiness.Update(person);
             if (person == null) return NotFound();
             return Ok(_personBusiness.Update(person));
+        }
+        [HttpPatch("disable/{id}")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Disable(long id)
+        {
+            var person = _personBusiness.Disable(id);
+            return Ok(person);
+        }
+        [HttpPatch("enable/{id}")]
+        [ProducesResponseType((200), Type = typeof(PersonVO))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult Enable(long id)
+        {
+            var person = _personBusiness.Enable(id);
+            return Ok(person);
         }
 
         [HttpDelete("{id}")]

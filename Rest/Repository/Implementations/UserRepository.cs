@@ -5,8 +5,9 @@ using System.Text;
 using Rest.Data.VO;
 using Rest.models;
 using Rest.Models.Context;
+using Rest.Repository.Interfaces;
 
-namespace Rest.Repository
+namespace Rest.Repository.Implementations
 {
     public class UserRepositoryImplementation : IUserRepository
     {

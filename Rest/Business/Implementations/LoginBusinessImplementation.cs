@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Rest.Configurations;
 using Rest.Data.VO;
 using Rest.Repository;
+using Rest.Repository.Interfaces;
 using Rest.Services;
 
 namespace Rest.Business.Implementations

@@ -8,16 +8,17 @@ using Rest.Data.Converter.Implementations;
 using Rest.Data.VO;
 using Rest.Repository;
 using Rest.Repository.Generic;
+using Rest.Repository.Interfaces;
 
 namespace Rest.Business.Implementations
 {
     public class PersonBusinessImplementation : IPersonBusiness
     {
-        private readonly IRepository<Person> _repository;
+        private readonly IPersonRepository _repository;
 
         private readonly PersonConverter _converter;
 
-        public PersonBusinessImplementation(IRepository<Person> repository) 
+        public PersonBusinessImplementation(IPersonRepository repository) 
         {
             _repository = repository;
             _converter = new PersonConverter();
@@ -26,6 +27,17 @@ namespace Rest.Business.Implementations
         public List<PersonVO> FindAll()
         {
             return _converter.Parse(_repository.FindAll());
+        }
+
+        public PersonVO Disable(long id)
+        {
+            var personEntity = _repository.Disable(id);
+            return _converter.Parse(personEntity);
+        }
+        public PersonVO Enable(long id)
+        {
+            var personEntity = _repository.Enable(id);
+            return _converter.Parse(personEntity);
         }
 
         public PersonVO FindById(long id)       

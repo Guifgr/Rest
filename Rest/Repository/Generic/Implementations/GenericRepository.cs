@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
-using Rest.Data.VO;
 using Rest.models.Base;
 using Rest.Models.Context;
 
@@ -10,7 +9,7 @@ namespace Rest.Repository.Generic.Implementations
 {
     public class GenericRepository<T> : IRepository<T> where T : BaseEntity
     {
-        private readonly MySqlContext _context;
+        protected readonly MySqlContext _context;
 
         private readonly DbSet<T> dataset;
         public GenericRepository(MySqlContext context)

@@ -22,6 +22,8 @@ using Rest.Configurations;
 using Rest.Repository;
 using Rest.Repository.Generic;
 using Rest.Repository.Generic.Implementations;
+using Rest.Repository.Implementations;
+using Rest.Repository.Interfaces;
 using Rest.Services;
 using Rest.Services.Implementatios;
 using RestWithASPNETUdemy.Hypermedia.Enricher;
@@ -123,6 +125,7 @@ namespace Rest
             services.AddTransient<ITokenService, TokenService>();
             
             services.AddScoped<IUserRepository, UserRepositoryImplementation>();
+            services.AddScoped<IPersonRepository, PersonRepository>();
 
             services.AddScoped(typeof(IRepository<>), typeof(GenericRepository<>));
 

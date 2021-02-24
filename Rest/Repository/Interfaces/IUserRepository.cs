@@ -1,7 +1,7 @@
 ﻿using Rest.Data.VO;
 using Rest.models;
 
-namespace Rest.Repository
+namespace Rest.Repository.Interfaces
 {
     public interface IUserRepository
     {
