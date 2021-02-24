@@ -9,8 +9,8 @@ using Rest.Models.Context;
 namespace Rest.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20210222132724_userMigration")]
-    partial class userMigration
+    [Migration("20210224175600_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -56,7 +56,11 @@ namespace Rest.Migrations
 
                     b.Property<string>("Address")
                         .HasColumnType("longtext")
-                        .HasColumnName("adress");
+                        .HasColumnName("address");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("enabled");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext")

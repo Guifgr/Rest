@@ -54,7 +54,11 @@ namespace Rest.Migrations
 
                     b.Property<string>("Address")
                         .HasColumnType("longtext")
-                        .HasColumnName("adress");
+                        .HasColumnName("address");
+
+                    b.Property<bool>("Enabled")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("enabled");
 
                     b.Property<string>("FirstName")
                         .HasColumnType("longtext")
