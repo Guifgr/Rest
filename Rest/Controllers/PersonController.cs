@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using Rest.models;
 using Rest.Business;
 using Rest.Data.VO;
 using RestWithASPNETUdemy.Hypermedia.Filters;
@@ -16,11 +14,8 @@ namespace Rest.Controllers
     public class PersonController : ControllerBase
     {
         private readonly IPersonBusiness _personBusiness;
-        
-        private readonly ILogger<PersonController> _logger;
-        public PersonController(ILogger<PersonController> logger, IPersonBusiness personBusiness)
+        public PersonController(IPersonBusiness personBusiness)
         {
-            _logger = logger;
             _personBusiness = personBusiness;
         }
 
@@ -37,11 +32,22 @@ namespace Rest.Controllers
         [ProducesResponseType(400)]
         [ProducesResponseType(401)]        
         [TypeFilter(typeof(HyperMediaFilter))]
-
-        [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult GetById(long id)
         {
             var person = _personBusiness.FindById(id);
+            if (person == null) return NotFound();
+            return Ok(person);
+        }
+        
+        [HttpGet("findPersonByName")]
+        [ProducesResponseType((200), Type = typeof(List<PersonVO>))]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(401)]        
+        [TypeFilter(typeof(HyperMediaFilter))]
+        public IActionResult GetByName([FromQuery] string firstName, [FromQuery] string lastName)
+        {
+            var person = _personBusiness.FindByName(firstName, lastName);
             if (person == null) return NotFound();
             return Ok(person);
         }

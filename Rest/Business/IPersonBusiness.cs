@@ -1,6 +1,4 @@
-﻿using Rest.models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Rest.Data.VO;
 
 namespace Rest.Business
@@ -10,6 +8,7 @@ namespace Rest.Business
         PersonVO Create(PersonVO person);
         PersonVO Update(PersonVO person);
         PersonVO FindById(long id);
+        List<PersonVO> FindByName(string firstName, string lastName);
         List<PersonVO> FindAll();
         PersonVO Disable(long id);
         PersonVO Enable(long id);

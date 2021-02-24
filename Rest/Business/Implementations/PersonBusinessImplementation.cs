@@ -1,13 +1,6 @@
-﻿using Rest.models;
-using System;
-using System.Threading;
-using System.Collections.Generic;
-using Rest.Models.Context;
-using System.Linq;
+﻿using System.Collections.Generic;
 using Rest.Data.Converter.Implementations;
 using Rest.Data.VO;
-using Rest.Repository;
-using Rest.Repository.Generic;
 using Rest.Repository.Interfaces;
 
 namespace Rest.Business.Implementations
@@ -22,6 +15,11 @@ namespace Rest.Business.Implementations
         {
             _repository = repository;
             _converter = new PersonConverter();
+        }
+
+        public List<PersonVO> FindByName(string firstName, string lastName)
+        {
+            return _converter.Parse(_repository.FindByName(firstName, lastName));
         }
 
         public List<PersonVO> FindAll()
