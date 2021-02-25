@@ -42,8 +42,9 @@ namespace Rest.Controllers
         public IActionResult Revoke()
         {
             var username = User.Identity.Name;
+            Console.WriteLine(username);
             var result = _loginBusiness.RevokeToken(username);
-            if (!result) return BadRequest("Invalid Client request");
+            if (!result) return BadRequest("Invalid client request");
             return NoContent();
         }
     }

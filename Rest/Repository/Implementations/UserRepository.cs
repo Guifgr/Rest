@@ -42,9 +42,10 @@ namespace Rest.Repository.Implementations
 
         public bool RevokeToken(string userName)
         {
-            var user = RefreshUserInfo(userName);
+            var user = _context.Users.SingleOrDefault(u => (u.UserName == userName));
             if (user is null) return false;
             user.RefreshToken = null;
+            user.RefreshTokenExpiryTime = DateTime.Now;
             _context.SaveChanges();
             return true;
         }
