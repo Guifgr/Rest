@@ -10,14 +10,14 @@ before_install:
 script:
   - docker-compose build
 before_deploy:
-  - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" -- password-stdin
+  - echo docker login --username "$USER"  --password "$PWD"
 deploy:
   provider: script
   script:
-    docker tag rest-with-asp-net-udemy-db:latest $DOCKER_USERNAME/rest-with-asp-net-udemy-db:latest:$TRAVIS_JOB_ID;
-    docker tag rest:latest $DOCKER_USERNAME/rest:latest:$TRAVIS_JOB_ID;
-    docker push $DOCKER_USERNAME/rest-with-asp-net-udemy-db:$TRAVIS_JOB_ID;
-    docker push $DOCKER_USERNAME/rest:$TRAVIS_JOB_ID;
+    docker tag rest-with-asp-net-udemy-db:latest $USER/rest-with-asp-net-udemy-db:latest:$TRAVIS_JOB_ID;
+    docker tag rest:latest $USER/rest:latest:$TRAVIS_JOB_ID;
+    docker push $USER/rest-with-asp-net-udemy-db:$TRAVIS_JOB_ID;
+    docker push $USER/rest:$TRAVIS_JOB_ID;
   on:
     branch: main
 notifications:
