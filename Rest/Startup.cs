@@ -11,7 +11,6 @@ using System;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Rewrite;
 using Microsoft.Extensions.DependencyInjection.Extensions;
@@ -21,7 +20,6 @@ using Microsoft.Net.Http.Headers;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Rest.Configurations;
-using Rest.Repository;
 using Rest.Repository.Generic;
 using Rest.Repository.Generic.Implementations;
 using Rest.Repository.Implementations;
@@ -153,6 +151,12 @@ namespace Rest
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+             using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<MySqlContext>();
+                context.Database.Migrate();
+            }
+        
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
