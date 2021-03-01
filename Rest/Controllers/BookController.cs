@@ -58,7 +58,6 @@ namespace Rest.Controllers
         [ProducesResponseType(401)]   
         [ProducesResponseType(500)]   
         [TypeFilter(typeof(HyperMediaFilter))]
-
         [TypeFilter(typeof(HyperMediaFilter))]
         public IActionResult Post([FromBody] Book book)
         {
